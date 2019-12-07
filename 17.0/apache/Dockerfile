@@ -9,6 +9,7 @@ RUN set -ex; \
         rsync \
         bzip2 \
         busybox-static \
+        git \
     ; \
     rm -rf /var/lib/apt/lists/*; \
     \
@@ -56,6 +57,7 @@ RUN set -ex; \
         pdo_pgsql \
         zip \
         gmp \
+        xml \
     ; \
     \
 # pecl will claim success even if one install fails, so we need to perform each install separately
@@ -143,6 +145,10 @@ RUN set -ex; \
     \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $fetchDeps; \
     rm -rf /var/lib/apt/lists/*
+
+RUN set -ex; \
+    curl -sL https://deb.nodesource.com/setup_12.x | bash - ; \
+    apt-get install -y nodejs ;
 
 COPY *.sh upgrade.exclude /
 COPY config/* /usr/src/nextcloud/config/
